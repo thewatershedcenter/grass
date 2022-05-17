@@ -19,6 +19,5 @@ docker run -it --rm --user=$(id -u):$(id -g) --volume $PWD:/work --volume $data:
 # data=/media/data
 # inDTM=arroyo_seco/usgs_1m_DEM/arroyo_seco.vrt
 # out=/media/data/arroyo_seco/derivatives
-
 # ./start2.sh $data red_relief.sh epsg:26910 $out $inDTM 20
 
