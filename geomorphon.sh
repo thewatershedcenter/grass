@@ -34,7 +34,7 @@ then
     OUT=/out/\${f%.*}_geomorph.tiff
 else
     # set region to aoi
-    v.in.ogr input=/data/\$AOI output=AOI
+    v.in.ogr input=/data/\$AOI output=aoi
     g.region vector=aoi
     echo "Region set from AOI:"
     g.region -p
