@@ -27,7 +27,7 @@ FLT=\$5
 SZ=\$6
 
 # import dtm
-r.in.gdal input=/data/\$DTM output=dtm --overwrite
+r.in.gdal input=/work/\$DTM output=dtm --overwrite
 
 # set region
 g.region raster=dtm
@@ -38,16 +38,16 @@ if [ -z \${AOI} ]
 then
     # make output filename
     f=\${DTM##*/}
-    OUT=/out/\${f%.*}_geomorph.tiff
+    OUT=/work/\${f%.*}_geomorph\$SRCH_\$SKP_\$FLT.tiff
 else
     # set region to aoi
-    v.in.ogr input=/data/\$AOI output=aoi
+    v.in.ogr input=/work/\$AOI output=aoi
     g.region vector=aoi
     echo "Region set from AOI:"
     g.region -p
     # make output filename
     f=\${AOI##*/}
-    OUT=/out/\${f%.*}_geomorph.tiff
+    OUT=/work/\${f%.*}_geomorph\$SRCH_\$SKP_\$FLT.tiff
 fi
 
 # calc slope from dtm
