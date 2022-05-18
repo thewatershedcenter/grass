@@ -11,7 +11,7 @@ echo "DTM   = $DTM"
 # this
 eval `cat /etc/os-release`
 
-# variable for grass exec for brevity
+# grass exec for brevity
 EXEC="grass --tmp-location $EPSG --exec"
 
 # use cat to write script to get around constraints of --tmp-location
@@ -20,6 +20,10 @@ cat >/out/scriptception.sh <<EOF
 #!/bin/bash
 
 DTM=\$1
+
+# make basename
+f=${inDTM##*/}
+OUT=/out/${f%.*}_geomorph.tiff
 
 # import dtm
 r.in.gdal input=/data/\$DTM output=dtm --overwrite
@@ -31,14 +35,18 @@ g.region raster=dtm
 r.slope.aspect elevation=dtm slope=Slope
 
 # calc 27 7 15 geomorphon
-r.geomorphon -m elevation=Slope forms=Geomorph_25_15_7 search=25 skip=7 flat=15
-echo "hey *****************"
+r.geomorphon -m elevation=Slope forms=geomorph search=25 skip=7 flat=15
+
 # map algeabra
-r.mapcalc expression="algeabra = if(Geomorph_25_15_7 <= 8, 0 ,1)"
+
+r.mapcalc expression="algeabra = if(geomorph <= 8, 0 ,1)"
 echo "ho  *****************"
 
 # neighborhood filter
-#r.neighbors input= size=7 method=sum
+r.neighbors input=algeabra output=neighbor size=7 method=sum
+
+# export tiff
+r.out.gdal input=neighbor output=$OUT format=GTiff --overwrite
 EOF
 # ***************END oF inTeRnAl sCrIpt *****************
 
