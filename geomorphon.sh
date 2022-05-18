@@ -24,7 +24,7 @@ r.in.gdal input=/data/\$DTM output=dtm --overwrite
 
 # set region
 g.region raster=dtm
-echo "Region set from DTM:\\n"
+echo "Region set from DTM:"
 g.region -p
 
 if [ -z \${AOI} ]
@@ -32,14 +32,11 @@ then
     # make output filename
     f=\${DTM##*/}
     OUT=/out/\${f%.*}_geomorph.tiff
-    echo "*********************
-    echo \$OUT
-    echo "*********************
 else
     # set region to aoi
     v.in.ogr input=\$AOI output=AOI
     g.region vector=aoi
-    echo "Region set from AOI:\\n"
+    echo "Region set from AOI:"
     g.region -p
     # make output filename
     f=\${AOI##*/}
@@ -59,7 +56,7 @@ r.mapcalc expression="algeabra = if(geomorph <= 8, 0 ,1)"
 r.neighbors input=algeabra output=neighbor size=7 method=sum
 
 # export tiff
-r.out.gdal input=neighbor output=$OUT format=GTiff --overwrite
+r.out.gdal input=neighbor output=\$OUT format=GTiff --overwrite
 EOF
 # ***************END oF inTeRnAl sCrIpt *****************
 
