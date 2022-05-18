@@ -21,11 +21,14 @@ cat >/out/scriptception.sh <<EOF
 
 DTM=\$1
 
+# import dtm
+r.in.gdal input=\$DTM output=dtm --overwrite
+
 # set region
-g.region raster=\$DTM
+g.region raster=dtm
 
 # calc slope from dtm
-r.slope.aspect elevation=\$DTM slope=Slope
+r.slope.aspect elevation=dtm slope=Slope
 
 # calc 27 7 15 geomorphon
 r.geomorphon -m elevation=Slope forms=Geomorph_25_15_7 search=25 skip=7 flat=15>
