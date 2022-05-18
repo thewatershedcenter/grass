@@ -22,7 +22,7 @@ cat >/out/scriptception.sh <<EOF
 DTM=\$1
 
 # import dtm
-r.in.gdal input=\$DTM output=dtm --overwrite
+r.in.gdal input=/data\$DTM output=dtm --overwrite
 
 # set region
 g.region raster=dtm
