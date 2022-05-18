@@ -3,6 +3,10 @@
 EPSG=$1
 DTM=$2
 AOI=$3
+SRCH=$4
+SKP=$5
+FLT=$6
+SZ=$7
 
 # this
 eval `cat /etc/os-release`
@@ -67,7 +71,7 @@ EOF
 chmod +x /out/scriptception.sh # Make the script executable
 
 # now execute it
-$EXEC /out/scriptception.sh $DTM $AOI
+$EXEC /out/scriptception.sh $DTM $AOI $SRCH $SKP $FLT $SZ
 
 # remove the script
 rm /out/scriptception.sh
