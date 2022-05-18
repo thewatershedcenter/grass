@@ -2,15 +2,13 @@
 
 EPSG=$1
 DTM=$2
+AOI=$3
 
 # this
 eval `cat /etc/os-release`
 
 # grass exec for brevity
 EXEC="grass --tmp-location $EPSG --exec"
-
-
-
 
 # use cat to write script to get around constraints of --tmp-location
 # ************ sTaRt oF inTeRnAl sCrIpt *****************
@@ -23,19 +21,12 @@ AOI=\$2
 # make output filename
 f=\${DTM##*/}
 OUT=/out/\${f%.*}_geomorph.tiff
-echo ""
-echo "*************************"
-echo \$DTM
-echo \$f
-echo \$OUT
-echo "*************************"
-echo ""
 
 # import dtm
 r.in.gdal input=/data/\$DTM output=dtm --overwrite
 
 # set region
-if [ -z \${AOI+x} ]
+if [ -z \${AOI} ]
 then
     echo " setting region to DTM"
     g.region raster=dtm
@@ -67,9 +58,7 @@ EOF
 chmod +x /out/scriptception.sh # Make the script executable
 
 # now execute it
-$EXEC /out/scriptception.sh $DTM
+$EXEC /out/scriptception.sh $DTM $AOI
 
 # remove the script
 rm /out/scriptception.sh
-
-
