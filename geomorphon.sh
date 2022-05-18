@@ -9,16 +9,7 @@ eval `cat /etc/os-release`
 # grass exec for brevity
 EXEC="grass --tmp-location $EPSG --exec"
 
-# make output filename
-f=${DTM##*/}
-OUT=/out/${f%.*}_geomorph.tiff
-echo ""
-echo "*************************"
-echo $DTM
-echo $f
-echo $OUT
-echo "*************************"
-echo ""
+
 
 
 # use cat to write script to get around constraints of --tmp-location
@@ -27,12 +18,32 @@ cat >/out/scriptception.sh <<EOF
 #!/bin/bash
 
 DTM=\$1
+AOI=\$2
+
+# make output filename
+f=\${DTM##*/}
+OUT=/out/\${f%.*}_geomorph.tiff
+echo ""
+echo "*************************"
+echo $DTM
+echo $f
+echo $OUT
+echo "*************************"
+echo ""
 
 # import dtm
 r.in.gdal input=/data/\$DTM output=dtm --overwrite
 
 # set region
-g.region raster=dtm
+if [ -z \${AOI+x} ]
+then
+    echo " setting region to DTM"
+    g.region raster=dtm
+else
+    echo " setting region to AOI"
+    v.in.ogr input=\$AOI output=AOI
+    g.region raster=aoi
+fi
 
 # calc slope from dtm
 r.slope.aspect elevation=dtm slope=Slope
@@ -62,9 +73,3 @@ $EXEC /out/scriptception.sh $DTM
 rm /out/scriptception.sh
 
 
-if [ -z ${AOI+x} ]
-then
-    :
-else
-    v.in.ogr
-fi
