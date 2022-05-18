@@ -34,8 +34,11 @@ r.slope.aspect elevation=dtm slope=Slope
 r.geomorphon -m elevation=Slope forms=Geomorph_25_15_7 search=25 skip=7 flat=15
 echo "hey *****************"
 # map algeabra
-r.mapcalc expression="if(Geomorph_25_15_7 <= 8, 0 ,1)"
+r.mapcalc expression="algeabra = if(Geomorph_25_15_7 <= 8, 0 ,1)"
 echo "ho  *****************"
+
+# neighborhood filter
+#r.neighbors input= size=7 method=sum
 EOF
 # ***************END oF inTeRnAl sCrIpt *****************
 
