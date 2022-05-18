@@ -9,14 +9,7 @@ eval `cat /etc/os-release`
 # grass exec for brevity
 EXEC="grass --tmp-location $EPSG --exec"
 
-# use cat to write script to get around constraints of --tmp-location
-# ************ sTaRt oF inTeRnAl sCrIpt *****************
-cat >/out/scriptception.sh <<EOF
-#!/bin/bash
-
-DTM=\$1
-
-# make basename
+# make output filename
 f=${DTM##*/}
 OUT=/out/${f%.*}_geomorph.tiff
 echo ""
@@ -26,6 +19,14 @@ echo $f
 echo $OUT
 echo "*************************"
 echo ""
+
+
+# use cat to write script to get around constraints of --tmp-location
+# ************ sTaRt oF inTeRnAl sCrIpt *****************
+cat >/out/scriptception.sh <<EOF
+#!/bin/bash
+
+DTM=\$1
 
 # import dtm
 r.in.gdal input=/data/\$DTM output=dtm --overwrite
@@ -61,3 +62,9 @@ $EXEC /out/scriptception.sh $DTM
 rm /out/scriptception.sh
 
 
+if [ -z ${AOI+x} ]
+then
+    :
+else
+    v.in.ogr
+fi
