@@ -22,8 +22,9 @@ cat >/out/scriptception.sh <<EOF
 DTM=\$1
 
 # make basename
-f=${inDTM##*/}
+f=${DTM##*/}
 OUT=/out/${f%.*}_geomorph.tiff
+echo "OUT is \n$OUT"
 
 # import dtm
 r.in.gdal input=/data/\$DTM output=dtm --overwrite
@@ -38,9 +39,7 @@ r.slope.aspect elevation=dtm slope=Slope
 r.geomorphon -m elevation=Slope forms=geomorph search=25 skip=7 flat=15
 
 # map algeabra
-
 r.mapcalc expression="algeabra = if(geomorph <= 8, 0 ,1)"
-echo "ho  *****************"
 
 # neighborhood filter
 r.neighbors input=algeabra output=neighbor size=7 method=sum
