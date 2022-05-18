@@ -17,7 +17,10 @@ cat >/out/scriptception.sh <<EOF
 
 DTM=\$1
 AOI=\$2
-
+SRCH=\$3
+SKP=\$4
+FLT=\$5
+SZ=\$6
 
 # import dtm
 r.in.gdal input=/data/\$DTM output=dtm --overwrite
@@ -47,13 +50,13 @@ fi
 r.slope.aspect elevation=dtm slope=Slope
 
 # calc geomorphon
-r.geomorphon elevation=Slope forms=geomorph search=25 skip=7 flat=15
+r.geomorphon elevation=Slope forms=geomorph search=\$SRCH skip=\$SKP flat=\$FLT
 
 # map algeabra
 r.mapcalc expression="algeabra = if(geomorph <= 8, 0 ,1)"
 
 # neighborhood filter
-r.neighbors input=algeabra output=neighbor size=7 method=sum
+r.neighbors input=algeabra output=neighbor size=\$SZ method=sum
 
 # export tiff
 r.out.gdal input=neighbor output=\$OUT format=GTiff --overwrite
