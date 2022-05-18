@@ -34,7 +34,7 @@ then
     OUT=/out/\${f%.*}_geomorph.tiff
 else
     # set region to aoi
-    v.in.ogr input=\$AOI output=AOI
+    v.in.ogr input=/data/\$AOI output=AOI
     g.region vector=aoi
     echo "Region set from AOI:"
     g.region -p
@@ -59,7 +59,6 @@ r.neighbors input=algeabra output=neighbor size=7 method=sum
 r.out.gdal input=neighbor output=\$OUT format=GTiff --overwrite
 EOF
 # ***************END oF inTeRnAl sCrIpt *****************
-
 
 # make script executable
 chmod +x /out/scriptception.sh # Make the script executable
