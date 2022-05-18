@@ -3,11 +3,6 @@
 EPSG=$1
 DTM=$2
 
-# soeme debugging output
-echo "\n\n\n----- args recieved by geomorph_start:"
-echo "EPSG  = $EPSG"
-echo "DTM   = $DTM"
-
 # this
 eval `cat /etc/os-release`
 
@@ -24,7 +19,12 @@ DTM=\$1
 # make basename
 f=${DTM##*/}
 OUT=/out/${f%.*}_geomorph.tiff
-echo "OUT is \n$OUT"
+echo ""
+echo "*************************"
+ecgo $f
+echo $OUT
+echo "*************************"
+echo ""
 
 # import dtm
 r.in.gdal input=/data/\$DTM output=dtm --overwrite
@@ -35,8 +35,8 @@ g.region raster=dtm
 # calc slope from dtm
 r.slope.aspect elevation=dtm slope=Slope
 
-# calc 27 7 15 geomorphon
-r.geomorphon -m elevation=Slope forms=geomorph search=25 skip=7 flat=15
+# calc geomorphon
+r.geomorphon elevation=Slope forms=geomorph search=25 skip=7 flat=15
 
 # map algeabra
 r.mapcalc expression="algeabra = if(geomorph <= 8, 0 ,1)"
