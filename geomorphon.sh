@@ -21,7 +21,7 @@ f=${DTM##*/}
 OUT=/out/${f%.*}_geomorph.tiff
 echo ""
 echo "*************************"
-ecgo $f
+echo $f
 echo $OUT
 echo "*************************"
 echo ""
