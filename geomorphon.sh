@@ -34,7 +34,7 @@ r.slope.aspect elevation=dtm slope=Slope
 r.geomorphon -m elevation=Slope forms=Geomorph_25_15_7 search=25 skip=7 flat=15
 
 # map algeabra
-r.mapcalc expression="Geomorph_25_15_7  <= 8, 0 ,1
+r.mapcalc expression="Geomorph_25_15_7  <= 8, 0 ,1"
 EOF
 # ***************END oF inTeRnAl sCrIpt *****************
 
