@@ -18,22 +18,32 @@ cat >/out/scriptception.sh <<EOF
 DTM=\$1
 AOI=\$2
 
-# make output filename
-f=\${DTM##*/}
-OUT=/out/\${f%.*}_geomorph.tiff
 
 # import dtm
 r.in.gdal input=/data/\$DTM output=dtm --overwrite
 
 # set region
+g.region raster=dtm
+echo "Region set from DTM:\\n"
+g.region -p
+
 if [ -z \${AOI} ]
 then
-    echo " setting region to DTM"
-    g.region raster=dtm
+    # make output filename
+    f=\${DTM##*/}
+    OUT=/out/\${f%.*}_geomorph.tiff
+    echo "*********************
+    echo \$OUT
+    echo "*********************
 else
-    echo " setting region to AOI"
+    # set region to aoi
     v.in.ogr input=\$AOI output=AOI
-    g.region raster=aoi
+    g.region vector=aoi
+    echo "Region set from AOI:\\n"
+    g.region -p
+    # make output filename
+    f=\${AOI##*/}
+    OUT=/out/\${f%.*}_geomorph.tiff
 fi
 
 # calc slope from dtm
