@@ -38,7 +38,7 @@ if [ -z \${AOI} ]
 then
     # make output filename
     f=\${DTM##*/}
-    OUT=/out/\${f%.*}_geomorph.tiff
+    OUT=/out/\${f%.*}_geomorph\$SRCH_\$SKP_\$FLT.tiff
 else
     # set region to aoi
     v.in.ogr input=/data/\$AOI output=aoi
@@ -47,7 +47,7 @@ else
     g.region -p
     # make output filename
     f=\${AOI##*/}
-    OUT=/out/\${f%.*}_geomorph.tiff
+    OUT=/out/\${f%.*}_geomorph\$SRCH_\$SKP_\$FLT.tiff
 fi
 
 # calc slope from dtm
