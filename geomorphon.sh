@@ -25,9 +25,9 @@ f=\${DTM##*/}
 OUT=/out/\${f%.*}_geomorph.tiff
 echo ""
 echo "*************************"
-echo $DTM
-echo $f
-echo $OUT
+echo \$DTM
+echo \$f
+echo \$OUT
 echo "*************************"
 echo ""
 
