@@ -18,8 +18,8 @@ EXEC="grass --tmp-location $EPSG --exec"
 # ************ sTaRt oF inTeRnAl sCrIpt *****************
 cat >/out/scriptception.sh <<EOF
 #!/bin/bash
-EPSG=\$1
-DTM=\$2
+
+DTM=\$1
 
 # set region
 g.region raster=\$DTM
@@ -40,7 +40,7 @@ EOF
 chmod +x /out/scriptception.sh # Make the script executable
 
 # now execute it
-$EXEC /out/scriptception.sh
+$EXEC /out/scriptception.sh $DTM
 
 # remove the script
 rm /out/scriptception.sh
