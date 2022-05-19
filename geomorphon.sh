@@ -74,6 +74,8 @@ EOF
 chmod +x /out/scriptception.sh # Make the script executable
 
 # now execute it
+echo "***************************************"
+echo "/out/scriptception.sh $DTM $AOI $SRCH $SKP $FLT $SZ"
 $EXEC /out/scriptception.sh $DTM $AOI $SRCH $SKP $FLT $SZ
 
 # remove the script
