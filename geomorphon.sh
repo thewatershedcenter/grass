@@ -50,7 +50,7 @@ else
     OUT=/out/\${f%.*}_geomorph_\$SRCH_\$SKP_\$FLT.tiff
 fi
 
-echo "Output file:"
+echo "************ Output file:*************"
 echo \$OUT
 
 # calc slope from dtm
