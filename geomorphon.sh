@@ -47,7 +47,7 @@ else
     g.region -p
     # make output filename
     f=\${AOI##*/}
-    echo "OUT=/out/\${f%.*}_geomorph_\$SRCH_\$SKP_\$FLT.tiff"
+    echo "\$SRCH \$SKP \$FLT"
     OUT=/out/\${f%.*}_geomorph_\$SRCH_\$SKP_\$FLT.tiff
 fi
 
