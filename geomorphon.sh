@@ -26,9 +26,6 @@ SKP=\$4
 FLT=\$5
 SZ=\$6
 
-echo "***************************************"
-echo "args: $DTM $AOI $SRCH $SKP $FLT $SZ"
-
 # import dtm
 r.in.gdal input=/data/\$DTM output=dtm --overwrite
 
@@ -50,6 +47,7 @@ else
     g.region -p
     # make output filename
     f=\${AOI##*/}
+    echo "OUT=/out/\${f%.*}_geomorph_\$SRCH_\$SKP_\$FLT.tiff"
     OUT=/out/\${f%.*}_geomorph_\$SRCH_\$SKP_\$FLT.tiff
 fi
 
