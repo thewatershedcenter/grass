@@ -29,22 +29,16 @@ SZ=\$6
 # import dtm
 r.in.gdal input=/data/\$DTM output=dtm --overwrite
 
-echo "************
-echo "\$SRCH \$SKP \$FLT"
-
 # set region
 g.region raster=dtm
 echo "Region set from DTM:"
 g.region -p
 
-echo "************
-echo "\$SRCH \$SKP \$FLT"
-
 if [ -z \${AOI} ]
 then
     # make output filename
     f=\${DTM##*/}
-    OUT=/out/\${f%.*}_geomorph_\$SRCH_\$SKP_\$FLT.tiff
+    OUT=/out/\${f%.*}_geomorph_\${SRCH}_\${SKP}_\$FLT.tiff
 else
     # set region to aoi
     v.in.ogr input=/data/\$AOI output=aoi
@@ -53,9 +47,7 @@ else
     g.region -p
     # make output filename
     f=\${AOI##*/}
-    echo "************"
-    echo "\$SRCH \$SKP \$FLT"
-    OUT=/out/\${f%.*}_geomorph_\$SRCH_\$SKP_\$FLT.tiff
+    OUT=/out/\${f%.*}_geomorph_\${SRCH}_\${SKP}_\$FLT.tiff
 fi
 
 echo "************ Output file:*************"
