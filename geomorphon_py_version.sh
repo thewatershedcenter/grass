@@ -1,13 +1,16 @@
 #!/bin/sh
-
+echo " "
 for ARGUMENT in "$@"
 do
-   KEY=$(echo $ARGUMENT | cut -f1 -d=)
+    KEY=$(echo $ARGUMENT | cut -f1 -d=)
+    echo "KEY = $KEY"
 
-   KEY_LENGTH=${#KEY}
-   VALUE="${ARGUMENT:$KEY_LENGTH+1}"
+    KEY_LENGTH=${#KEY}
+    echo "KEY_LENGTH = $KEY_LENGTH"
 
-   export "$KEY"="$VALUE"
+    VALUE="${ARGUMENT:$KEY_LENGTH+1}"
+
+    export "$KEY"="$VALUE"
 done
 
 # this
@@ -68,7 +71,7 @@ then
     r.neighbors input=algeabra output=neighbor size=\$SZ method=sum
 else
     # neighborhood filter with gauss
-    r.neighbors input=algeabra output=neighbor size=\$SZ method=sum  guass=\$GUASS
+    r.neighbors input=algeabra output=neighbor size=\$SZ method=sum  gauss=\$GAUSS
 
 # export tiff
 r.out.gdal input=neighbor output=\$OUT format=GTiff --overwrite

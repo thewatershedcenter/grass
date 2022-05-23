@@ -1,4 +1,5 @@
 # %%
+from operator import truediv
 import subprocess
 import os
 import argparse
@@ -85,7 +86,7 @@ def parse_arguments():
         help='''Neighborhood operation. One of average, median, mode,
          minimum, maximum, range, stddev, sum, count, variance, diversity,
          interspersion, quart1, quart3, perc90, quantile. Default is sum.''',
-        const='sum'
+        default='sum'
     )
 
     parser.add_argument(
@@ -98,23 +99,22 @@ def parse_arguments():
     parser.add_argument(
         '--trials',
         type=int,
-        require=False,
+        required=False,
         help='''Number of trials to run with different values for search, skip, flat,
-        neighbor_size and guassian'''
+        neighbor_size and gaussian'''
     )
 
     # parse the args
     args = parser.parse_args()
 
-    # make path objects from data, dtm, aoi
+    # make path objects from data, dtm
     dtm = pathlib.Path(args.dtm)
-    data = pathlib.Path(args.data)
-    if args.aoi:
-        aoi = pathlib.Path(args.aoi)
+    data = pathlib.Path(args.data_dir)
 
     # change args.dtm and args.aoi to relative path from data
     args.dtm = str(dtm.relative_to(*data.parts))
     if args.aoi:
+        aoi = pathlib.Path(args.aoi)
         args.aoi = str(aoi.relative_to(*data.parts))
     else:
         # if None change to empty string
@@ -122,7 +122,7 @@ def parse_arguments():
 
     # avoid Nonetype in output for gauss
     if not args.gauss:
-        args.guass = ''
+        args.gauss = ''
 
     return args
 
@@ -169,7 +169,14 @@ def build_command(args):
     builds docker run cammands based on args.
     returns list of commands for subprocess'''
 
-    cmd = f'docker run -it --rm --pull=always --user=$(id -u):$(id -g) --volume $PWD:/work --volume {arg.data_dir}:/data --volume {arg.out_dir}:/out --env HOME=/work quay.io/wrtc/geomorphon:sha-latest EPSG={arg.epsg} DTM={args.dtm} SRCH={args.search} SKP={args.skip} FLT={args.flat} SZ={args.neighbor_size} AOI={args.aoi} GUASS={args.gauss}'
+    cmd = f'docker run -it --rm --pull=always --user=$(id -u):$(id -g) --volume $PWD:/work --volume {args.data_dir}:/data --volume {args.output_dir}:/out --env HOME=/work quay.io/wrtc/geomorphon:py-latest EPSG=epsg:{args.epsg} DTM={args.dtm} SRCH={args.search} SKP={args.skip} FLT={args.flat} SZ={args.neighbor_size}'
+
+    if args.aoi:
+        cmd = cmd + f' AOI={args.aoi}'
+    if args.gauss:
+        cmd = cmd + f' GAUSS={args.gauss}'
+
+    return cmd
 
 # %%
 if __name__ == '__main__':
@@ -186,7 +193,7 @@ if __name__ == '__main__':
         params['output_dir'] = args.output_dir
         params['data_dir'] = args.data_dir
     else:
-        params = params = pd.DataFrame(
+        params = pd.DataFrame(
         columns=[
             'search',
             'skip',
@@ -196,21 +203,23 @@ if __name__ == '__main__':
             ]
         )
 
-        params['search'] = args.search
-        params['skip'] = args.skip
-        params['flat'] = args.flat
-        params['neighbor_size'] = args.neighbor_size
-        params['gauss'] = args.gauss
-        params['epsg'] = args.epsg
-        params['dtm'] = args.dtm
-        params['aoi'] = args.aoi
-        params['output_dir'] = args.output_dir
-        params['data_dir'] = args.data_dir
+        params['search'] = [args.search]
+        params['skip'] = [args.skip]
+        params['flat'] = [args.flat]
+        params['neighbor_size'] = [args.neighbor_size]
+        params['gauss'] = [args.gauss]
+        params['epsg'] = [args.epsg]
+        params['dtm'] = [args.dtm]
+        params['aoi'] = [args.aoi]
+        params['output_dir'] = [args.output_dir]
+        params['data_dir'] = [args.data_dir]
+
 
     for _, row in params.iterrows():
         cmd = build_command(row)
 
-
+        _ = subprocess.run(cmd, shell=True)
 
 
 # %%
+# python slope_geomorph.py --epsg='26910' --data_dir='/media/data' --dtm='/media/data/arroyo_seco/usgs_1m_DEM/arroyo_seco.vrt' --output_dir='/media/data/arroyo_seco/derivatives'  --search=25 --skip=7 --flat=15 --neighbor_size=7 --aoi=/media/data/arroyo_seco/aoi/aoi.shp
