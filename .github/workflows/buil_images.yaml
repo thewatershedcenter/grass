@@ -25,7 +25,7 @@ jobs:
       # A matrix of Dockerfile paths and associated tags
       # Dockerfile in root builds to tag latest
       matrix:
-        dockerfile: [[vice_geomorph_docker/Dockerfile, vice-], [geomorph_docker/Dockerfile, sha-]]
+        dockerfile: [[vice_geomorph_docker/Dockerfile, vice-], [geomorph_docker/Dockerfile, sha-], [py_geomorph_docker/Dockerfile, py-]]
     steps:
       - name: Get short SHA
         id: shorty
