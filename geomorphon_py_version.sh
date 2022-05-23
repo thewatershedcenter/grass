@@ -6,10 +6,10 @@ do
     echo "KEY = $KEY"
 
     KEY_LENGTH=${#KEY}
-    echo "KEY_LENGTH = $KEY_LENGTH"
+    echo "KEY_LENGTH + 1 = ${KEY_LENGTH+1}"
     echo ${ARGUMENT:$KEY_LENGTH+1}
 
-    VALUE="${ARGUMENT:$KEY_LENGTH+1}"
+    VALUE="${ARGUMENT:${KEY_LENGTH+1}}"
 
     export "$KEY"="$VALUE"
 done
