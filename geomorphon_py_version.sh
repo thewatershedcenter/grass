@@ -10,14 +10,6 @@ do
    export "$KEY"="$VALUE"
 done
 
-EPSG=$1
-DTM=$2
-AOI=$3
-SRCH=$4
-SKP=$5
-FLT=$6
-SZ=$7
-
 # this
 eval `cat /etc/os-release`
 
