@@ -7,6 +7,7 @@ do
 
     KEY_LENGTH=${#KEY}
     echo "KEY_LENGTH = $KEY_LENGTH"
+    echo ${ARGUMENT:$KEY_LENGTH+1}
 
     VALUE="${ARGUMENT:$KEY_LENGTH+1}"
 

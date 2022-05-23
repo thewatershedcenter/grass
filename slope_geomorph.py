@@ -169,7 +169,7 @@ def build_command(args):
     builds docker run cammands based on args.
     returns list of commands for subprocess'''
 
-    cmd = f'docker run -it --rm --pull=always --user=$(id -u):$(id -g) --volume $PWD:/work --volume {args.data_dir}:/data --volume {args.output_dir}:/out --env HOME=/work quay.io/wrtc/geomorphon:py-latest EPSG=epsg:{args.epsg} DTM={args.dtm} SRCH={args.search} SKP={args.skip} FLT={args.flat} SZ={args.neighbor_size}'
+    cmd = f'docker run -it --rm --pull=always --user=$(id -u):$(id -g) --volume $PWD:/work --volume {args.data_dir}:/data --volume {args.output_dir}:/out --env HOME=/work quay.io/wrtc/geomorphon:py-latest EPSG="epsg:{args.epsg}" DTM="{args.dtm}" SRCH="{args.search}" SKP="{args.skip}" FLT="{args.flat}" SZ="{args.neighbor_size}"'
 
     if args.aoi:
         cmd = cmd + f' AOI={args.aoi}'
@@ -217,6 +217,10 @@ if __name__ == '__main__':
 
     for _, row in params.iterrows():
         cmd = build_command(row)
+
+        print()
+        print(cmd)
+        print()
 
         _ = subprocess.run(cmd, shell=True)
 
