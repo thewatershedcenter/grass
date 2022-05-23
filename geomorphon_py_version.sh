@@ -6,10 +6,10 @@ do
     echo "KEY = $KEY"
 
     KEY_LENGTH=${#KEY}
-    echo "KEY_LENGTH + 1 = ${KEY_LENGTH+1}"
+
     echo ${ARGUMENT:$KEY_LENGTH+1}
 
-    VALUE="${ARGUMENT:${KEY_LENGTH+1}}"
+    VALUE="${ARGUMENT:$KEY_LENGTH+1}"
 
     export "$KEY"="$VALUE"
 done
@@ -31,7 +31,7 @@ SRCH=\$3
 SKP=\$4
 FLT=\$5
 SZ=\$6
-GUASS=\$7
+GAUSS=\$7
 
 # import dtm
 r.in.gdal input=/data/\$DTM output=dtm --overwrite
